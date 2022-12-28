@@ -4,10 +4,9 @@ import app from '../index';
 
 
 describe('Test the /api endpoint', () => {
-    it('should return "server working"', async () => {
+    it('should return "main api route"', async () => {
       const response = await request(app).get('/api');
       expect(response.status).toEqual(200);
-      expect(response.text).toEqual('server working');
+      expect(response.text).toEqual('main api route');
     });
 });
-  

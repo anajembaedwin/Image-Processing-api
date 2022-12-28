@@ -4,12 +4,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const api_1 = __importDefault(require("./routes/api"));
 const app = (0, express_1.default)();
 const port = 3000;
-app.get('/api', (req, res) => {
-    res.send('server working');
-});
+app.use("/api", api_1.default);
+// app.get('/api', (req: express.Request, res: express.Response) => {
+//   res.send('server working');
+// });
 app.listen(port, () => {
-    console.log(`server started at http://localhost:${port}`);
+    console.log(`server started at http://localhost:${port}/api`);
 });
 exports.default = app;

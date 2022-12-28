@@ -15,9 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const supertest_1 = __importDefault(require("supertest"));
 const index_1 = __importDefault(require("../index"));
 describe('Test the /api endpoint', () => {
-    it('should return "server working"', () => __awaiter(void 0, void 0, void 0, function* () {
+    it('should return "main api route"', () => __awaiter(void 0, void 0, void 0, function* () {
         const response = yield (0, supertest_1.default)(index_1.default).get('/api');
         expect(response.status).toEqual(200);
-        expect(response.text).toEqual('server working');
+        expect(response.text).toEqual('main api route');
     }));
 });
