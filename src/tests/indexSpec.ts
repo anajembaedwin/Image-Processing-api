@@ -1,5 +1,13 @@
-import myFunc from '../index';
+import request from 'supertest';
+import app from '../index';
 
-it('expect myFunc(5) to equal 25', () => {
-  expect(myFunc(5)).toEqual(25);
+
+
+describe('Test the /api endpoint', () => {
+    it('should return "server working"', async () => {
+      const response = await request(app).get('/api');
+      expect(response.status).toEqual(200);
+      expect(response.text).toEqual('server working');
+    });
 });
+  
