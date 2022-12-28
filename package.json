@@ -1,0 +1,25 @@
+{
+  "name": "image-processing-api",
+  "version": "1.0.0",
+  "description": "Image processing api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anajembaedwin/Image-Processing-api.git"
+  },
+  "author": "Edwin Anajemba",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anajembaedwin/Image-Processing-api/issues"
+  },
+  "homepage": "https://github.com/anajembaedwin/Image-Processing-api#readme",
+  "devDependencies": {
+    "@types/eslint": "^8.4.10",
+    "@typescript-eslint/eslint-plugin": "^5.47.1",
+    "@typescript-eslint/parser": "^5.47.1",
+    "eslint": "^8.30.0"
+  }
+}
