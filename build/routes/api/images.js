@@ -41,10 +41,13 @@ const sharp_1 = __importDefault(require("sharp"));
 const path = __importStar(require("path"));
 // Create the router for the image routes
 const images = express_1.default.Router();
+// console.log(`checking images: ${images}`);
 // Set the absolute path for the full size images
 const fullImagePath = path.resolve(__dirname, 'public/images/full');
+// console.log(`checking fullImagePath: ${fullImagePath}`);
 // Set the absolute path for the thumbnail images
 const thumbImagePath = path.resolve(__dirname, 'public/images/thumb');
+// console.log(`checking fullImagePath: ${thumbImagePath}`);
 // Route for uploading an image
 // images.post("/", upload.single("image"), async (req, res) => {
 //   // Check if an image was provided
@@ -65,8 +68,11 @@ images.get("/images/:filename/:width/:height", (req, res) => __awaiter(void 0, v
     try {
         // Read the image file
         const fullImageFile = path.join(fullImagePath, req.params.filename);
+        console.log(`checking fullImageFile: ${fullImageFile}`);
         const thumbImageFile = path.join(thumbImagePath, req.params.filename);
+        console.log(`checking thumbImageFile: ${thumbImageFile}`);
         const image = (0, sharp_1.default)(fullImageFile);
+        console.log(`checking image: ${image}`);
         // const image = sharp(fullImagePath + req.params.filename);
         // Resize the image
         const resizedImage = yield image.resize(parseInt(req.params.width), parseInt(req.params.height));
