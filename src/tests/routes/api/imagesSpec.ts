@@ -1,16 +1,22 @@
 import request from "supertest";
-import express from "express";
-import images from "../../../routes";
+import routes from "../../../routes";
 
-const app = express();
-app.use(images);
 
-describe("Test the images route", () => {
-  it("should return a 200 status code and 'images api route' as the response", (done) => {
-    request(app).get("/images").then((response) => {
-      expect(response.status).toEqual(200);
-      expect(response.text).toEqual("images api route");
-      done();
+describe("GET /images/:filename/:width/:height", () => {
+    it("should return the file name of the resized image", async () => {
+      // Set up the request parameters
+      const filename = "fjord.jpg";
+      const width = 400;
+      const height = 300;
+  
+      // Send the request
+      const response = await request(routes).get(`/images/${filename}/${width}/${height}`);
+  
+      // Verify the response
+      expect(response.status).toBe(200);
+      expect(response.text).toBe(filename);
     });
   });
-});
+
+  
+  
