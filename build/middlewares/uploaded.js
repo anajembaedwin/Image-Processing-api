@@ -39,14 +39,15 @@ const path = __importStar(require("path"));
 const fs_1 = __importDefault(require("fs"));
 const uploaded = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(req.params.width, req.params.height);
-    const thumbImageFile = path.join(__dirname, req.params.filename) + `_${req.params.width}_${req.params.height}.jpg`;
+    const thumbImageFile = path.join(__dirname, req.params.filename) +
+        `_${req.params.width}_${req.params.height}.jpg`;
     try {
-        console.log("checking path error");
-        yield fs_1.default.promises.readFile(thumbImageFile, "utf8");
+        console.log('checking path error');
+        yield fs_1.default.promises.readFile(thumbImageFile, 'utf8');
         res.status(200).sendFile(thumbImageFile);
     }
     catch (error) {
-        console.log("checking catch error");
+        console.log('checking catch error');
         next();
     }
 });

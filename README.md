@@ -28,7 +28,7 @@ This API can presently only resize jpg images and updates will be made to includ
 
 You can resize images on the browser using this sample endpoint:
 
->> http://127.0.0.1:3000/api/images/fjord/400/300
+>> http://127.0.0.1:3000/api/images/full/fjord/400/300
 
 Note: Only include the name of the image without the extention. Replace fjord/400/300 with the image-name/image-width/image-height of any other image in the folder to respectively.
 

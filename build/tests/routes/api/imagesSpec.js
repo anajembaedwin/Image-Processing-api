@@ -15,13 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const supertest_1 = __importDefault(require("supertest"));
 const __1 = __importDefault(require("../../.."));
 // import routes from "../../../routes";
-describe("GET /api/images/full/:filename/:width/:height", () => {
-    it("should return a 200 status code", () => __awaiter(void 0, void 0, void 0, function* () {
+describe('GET /api/images/full/:filename/:width/:height', () => {
+    it('should return a 200 status code', () => __awaiter(void 0, void 0, void 0, function* () {
         // Set up the request parameters
-        const filename = "fjord";
+        const filename = 'fjord';
         const width = 400;
         const height = 300;
-        console.log("we are sending the request");
+        console.log('we are sending the request');
         // Send the request
         const response = yield (0, supertest_1.default)(__1.default).get(`/api/images/full/${filename}/${width}/${height}`);
         console.log(`Here is the response ${response}`);

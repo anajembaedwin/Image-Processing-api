@@ -8,11 +8,13 @@ const express_1 = __importDefault(require("express"));
 const routes_1 = __importDefault(require("../../routes"));
 const app = (0, express_1.default)();
 app.use(routes_1.default);
-describe("Test the main route", () => {
+describe('Test the main route', () => {
     it("should return a 200 status code and 'main route' as the response", (done) => {
-        (0, supertest_1.default)(app).get("/").then((response) => {
+        (0, supertest_1.default)(app)
+            .get('/')
+            .then((response) => {
             expect(response.status).toEqual(200);
-            expect(response.text).toEqual("main api route");
+            expect(response.text).toEqual('main api route');
             done();
         });
     });

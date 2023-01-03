@@ -14,7 +14,7 @@ const port = 3000;
 // Enable CORS for all routes
 app.use((0, cors_1.default)());
 // Enable routes
-app.use("/api", logger_1.default, routes_1.default);
+app.use('/api', logger_1.default, routes_1.default);
 // Start the server
 app.listen(port, () => {
     console.log(`server started at http://localhost:${port}/api`);
