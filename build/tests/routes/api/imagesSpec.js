@@ -16,7 +16,7 @@ const supertest_1 = __importDefault(require("supertest"));
 const __1 = __importDefault(require("../../.."));
 // import routes from "../../../routes";
 describe("GET /api/images/full/:filename/:width/:height", () => {
-    it("should return the file name of the resized image", () => __awaiter(void 0, void 0, void 0, function* () {
+    it("should return a 200 status code", () => __awaiter(void 0, void 0, void 0, function* () {
         // Set up the request parameters
         const filename = "fjord";
         const width = 400;

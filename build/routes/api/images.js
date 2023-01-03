@@ -86,7 +86,6 @@ images.get("/full/:filename/:width/:height", uploaded_1.default, (req, res) => _
             .catch((error) => {
             console.error(error);
         });
-        // resizedImage.toFile(thumbImagePath + req.params.filename);
     }
     catch (error) {
         // If there was an error, send a 500 status code
