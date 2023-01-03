@@ -1,13 +1,10 @@
 <html>
   <body>
-    <img id="my-image" />
+    <img id="resized-image" />
     <script>
-      const imageElement = document.getElementById('my-image');
-      const filename = 'fjord.jpg';
-      const width = 400;
-      const height = 300;
+      const imageElement = document.getElementById('resized-image');
 
-      imageElement.src = `http://localhost:3000/api/images/resize/${filename}/${width}/${height}`;
+      imageElement.src = `http://localhost:3000/api/images/thumb/${filename}/${width}/${height}`;
     </script>
   </body>
 </html>

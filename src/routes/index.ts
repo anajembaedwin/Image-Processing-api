@@ -8,6 +8,6 @@ routes.get('/', (req: express.Request, res: express.Response) => {
     res.send('main api route');
 });
 
-routes.use('/images/:filename/:width/:height', logger, images);
+routes.use('/images/full/:filename/:width/:height', logger, images);
 
 export default routes;

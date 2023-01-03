@@ -39,17 +39,18 @@ const express_1 = __importDefault(require("express"));
 const sharp_1 = __importDefault(require("sharp"));
 // import upload from '../../middlewares/upload';
 const path = __importStar(require("path"));
+const fs_1 = __importDefault(require("fs"));
 // Create the router for the image routes
 const images = express_1.default.Router();
 // console.log(`checking images: ${images}`);
 // Set the absolute path for the full size images
-const fullImagePath = path.resolve(__dirname, 'public/images/full');
+const fullImagePath = path.resolve(__dirname, 'images/full');
 // console.log(`checking fullImagePath: ${fullImagePath}`);
 // Set the absolute path for the thumbnail images
-const thumbImagePath = path.resolve(__dirname, 'public/images/thumb');
+const thumbImagePath = path.resolve(__dirname, 'images/thumb');
 // console.log(`checking fullImagePath: ${thumbImagePath}`);
-// Route for uploading an image
-// images.post("/", upload.single("image"), async (req, res) => {
+// // Route for uploading an image
+// images.post("/upload", upload.single("image"), async (req, res) => {
 //   // Check if an image was provided
 //   if (!req.file) {
 //     return res.status(400).send("No image provided");
@@ -58,12 +59,17 @@ const thumbImagePath = path.resolve(__dirname, 'public/images/thumb');
 //   res.send(req.file.filename);
 // });
 // Route for resizing an image
-images.get("/images/:filename/:width/:height", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+images.get("/images/full/:filename/:width/:height", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // Validate the width and height parameters
     const widthValid = /^\d+$/.test(req.params.width) && parseInt(req.params.width) > 0;
     const heightValid = /^\d+$/.test(req.params.height) && parseInt(req.params.height) > 0;
     if (!widthValid || !heightValid) {
         return res.status(400).send("Invalid width or height parameter");
+    }
+    // Check for the existence of the file
+    const fullImageFile = path.join(fullImagePath, req.params.filename);
+    if (!fs_1.default.existsSync(fullImageFile)) {
+        return res.status(404).send("File not found");
     }
     try {
         // Read the image file
@@ -73,11 +79,25 @@ images.get("/images/:filename/:width/:height", (req, res) => __awaiter(void 0, v
         console.log(`checking thumbImageFile: ${thumbImageFile}`);
         const image = (0, sharp_1.default)(fullImageFile);
         console.log(`checking image: ${image}`);
-        // const image = sharp(fullImagePath + req.params.filename);
+        // get image metadata
+        const metadata = yield image.metadata();
+        // If the metadata is null, it means that the image could not be read
+        if (metadata === null) {
+            throw new Error('Failed to read image file');
+        }
+        // console.log(metadata);
         // Resize the image
         const resizedImage = yield image.resize(parseInt(req.params.width), parseInt(req.params.height));
         // Save the resized image to the thumbnail folder
-        resizedImage.toFile(thumbImageFile);
+        // resizedImage.toFile(thumbImageFile);
+        // with error handling
+        resizedImage.toFile(thumbImageFile)
+            .then(() => {
+            console.log('Resized image saved to thumbImagePath successfully');
+        })
+            .catch((error) => {
+            console.error(error);
+        });
         // resizedImage.toFile(thumbImagePath + req.params.filename);
         // Send a response with the file name of the resized image
         res.send(req.params.filename);
