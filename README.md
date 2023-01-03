@@ -12,6 +12,14 @@ npm install
 ```
 
 ```
+npm run prettier
+```
+
+```
+npm run lint
+```
+
+```
 npm run test
 ```
 

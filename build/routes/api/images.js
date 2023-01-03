@@ -91,7 +91,7 @@ images.get('/full/:filename/:width/:height', uploaded_1.default, (req, res) => _
     }
     catch (error) {
         // If there was an error, send a 500 status code
-        res.status(500).send("Error in resizing file");
+        res.status(500).send('Error in resizing file');
     }
 }));
 exports.default = images;
