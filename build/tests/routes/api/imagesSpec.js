@@ -13,17 +13,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const supertest_1 = __importDefault(require("supertest"));
-const routes_1 = __importDefault(require("../../../routes"));
-describe("GET /images/full/:filename/:width/:height", () => {
+const __1 = __importDefault(require("../../.."));
+// import routes from "../../../routes";
+describe("GET /api/images/full/:filename/:width/:height", () => {
     it("should return the file name of the resized image", () => __awaiter(void 0, void 0, void 0, function* () {
         // Set up the request parameters
-        const filename = "fjord.jpg";
+        const filename = "fjord";
         const width = 400;
         const height = 300;
+        console.log("we are sending the request");
         // Send the request
-        const response = yield (0, supertest_1.default)(routes_1.default).get(`/images/full/${filename}/${width}/${height}`);
+        const response = yield (0, supertest_1.default)(__1.default).get(`/api/images/full/${filename}/${width}/${height}`);
+        console.log(`Here is the response ${response}`);
         // Verify the response
         expect(response.status).toBe(200);
-        expect(response.text).toBe(filename);
     }));
 });

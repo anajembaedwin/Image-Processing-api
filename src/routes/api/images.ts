@@ -9,14 +9,18 @@ import fs from 'fs';
 const images = express.Router();
 // console.log(`checking images: ${images}`);
 
+// images.get("/", async (req:express.Request, res:express.Response) => {
+//   res.status(200).send("we are in w");
+// })
+
 // Set the absolute path for the full size images
-const fullImagePath = path.resolve(__dirname, 'images/full');
+const fullImagePath = path.resolve(__dirname, '../../../images/full');
 // console.log(`checking fullImagePath: ${fullImagePath}`);
 
 
 
 // Set the absolute path for the thumbnail images
-const thumbImagePath = path.resolve(__dirname, 'images/thumb');
+const thumbImagePath = path.resolve(__dirname, '../../../images/thumb');
 // console.log(`checking fullImagePath: ${thumbImagePath}`);
 
 // // Route for uploading an image
@@ -30,8 +34,23 @@ const thumbImagePath = path.resolve(__dirname, 'images/thumb');
 //   res.send(req.file.filename);
 // });
 
+const middleWareFunc = async (req:express.Request, res:express.Response, next: express.NextFunction) => {
+  console.log(req.params.width, req.params.height);
+  const thumbImageFile = path.join(__dirname, req.params.filename) +`_${req.params.width}_${req.params.height}.jpg`;
+  try{
+    console.log("checking path error");
+    await fs.promises.readFile(thumbImageFile, "utf8");
+    res.status(200).sendFile(thumbImageFile);
+  }catch(error) {
+    console.log("checking catch error");
+    next()
+  }
+
+}
 // Route for resizing an image
-images.get("/images/full/:filename/:width/:height", async (req: express.Request, res: express.Response) => {
+images.get("/full/:filename/:width/:height", middleWareFunc, async (req: express.Request, res: express.Response) => {
+
+    console.log("I am accepting images");
    // Validate the width and height parameters
     const widthValid = /^\d+$/.test(req.params.width) && parseInt(req.params.width) > 0;
     const heightValid = /^\d+$/.test(req.params.height) && parseInt(req.params.height) > 0;
@@ -41,16 +60,17 @@ images.get("/images/full/:filename/:width/:height", async (req: express.Request,
   }
 
     // Check for the existence of the file
-    const fullImageFile = path.join(fullImagePath, req.params.filename);
+    const fullImageFile = path.join(fullImagePath, req.params.filename) + ".jpg";
+    console.log(fullImageFile);
     if (!fs.existsSync(fullImageFile)) {
       return res.status(404).send("File not found");
     }
 
   try {
     // Read the image file
-    const fullImageFile = path.join(fullImagePath, req.params.filename);
+    const fullImageFile = path.join(fullImagePath, req.params.filename) + ".jpg";
     console.log(`checking fullImageFile: ${fullImageFile}`);
-    const thumbImageFile = path.join(thumbImagePath, req.params.filename);
+    const thumbImageFile = path.join(thumbImagePath, req.params.filename) +`_${req.params.width}_${req.params.height}.jpg`;
     console.log(`checking thumbImageFile: ${thumbImageFile}`);
     const image = sharp(fullImageFile);
     console.log(`checking image: ${image}`);
@@ -76,6 +96,8 @@ images.get("/images/full/:filename/:width/:height", async (req: express.Request,
     resizedImage.toFile(thumbImageFile)
     .then(() => {
       console.log('Resized image saved to thumbImagePath successfully');
+          // Send a response with the file name of the resized image
+      res.status(200).sendFile(thumbImageFile)
     })
     .catch((error) => {
       console.error(error);
@@ -83,8 +105,6 @@ images.get("/images/full/:filename/:width/:height", async (req: express.Request,
     // resizedImage.toFile(thumbImagePath + req.params.filename);
     
 
-    // Send a response with the file name of the resized image
-    res.send(req.params.filename);
   } catch (error: any) {
     // If there was an error, send a 500 status code
     res.status(500).send(error.message);
