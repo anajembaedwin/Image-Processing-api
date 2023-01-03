@@ -5,7 +5,7 @@ import app from "../../..";
 
 describe("GET /api/images/full/:filename/:width/:height", () => {
 
-    it("should return the file name of the resized image", async () => {
+    it("should return a 200 status code", async () => {
       // Set up the request parameters
       const filename = "fjord";
       const width = 400;

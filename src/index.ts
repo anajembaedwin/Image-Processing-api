@@ -14,9 +14,6 @@ app.use(cors());
 
 // Enable routes
 app.use("/api", logger, routes);
-// app.get('/api', (req: express.Request, res: express.Response) => {
-//   res.send('server working');
-// });
 
 // Start the server
 app.listen(port, () => {
