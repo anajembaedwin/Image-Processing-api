@@ -1,9 +1,12 @@
 import express from 'express';
-import sharp from 'sharp';
+
 //middleware to check if picture has already been
 import uploaded from '../../middlewares/uploaded';
+
 import * as path from 'path';
 import fs from 'fs';
+
+import resizeImage from '../../utilities/resizer';
 
 // Create the router for the image routes
 const images = express.Router();
@@ -39,43 +42,7 @@ images.get(
     }
 
     try {
-      // Read the image file
-      const fullImageFile =
-        path.join(fullImagePath, req.params.filename) + '.jpg';
-
-      const thumbImageFile =
-        path.join(thumbImagePath, req.params.filename) +
-        `_${req.params.width}_${req.params.height}.jpg`;
-
-      const image = sharp(fullImageFile);
-
-      // get image metadata
-      const metadata = await image.metadata();
-
-      // If the metadata is null, it means that the image could not be read
-      if (metadata === null) {
-        throw new Error('Failed to read image file');
-      }
-
-      // Resize the image
-      const resizedImage = await image.resize(
-        parseInt(req.params.width),
-        parseInt(req.params.height)
-      );
-
-      // Save the resized image to the thumbnail folder
-      // resizedImage.toFile(thumbImageFile);
-      // with error handling
-      resizedImage
-        .toFile(thumbImageFile)
-        .then(() => {
-          console.log('Resized image saved to thumbImagePath successfully');
-          // Send a response with the file name of the resized image
-          res.status(200).sendFile(thumbImageFile);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      await resizeImage(fullImagePath, thumbImagePath, req, res);
     } catch (error) {
       // If there was an error, send a 500 status code
       res.status(500).send('Error in resizing file');
