@@ -35,38 +35,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+// import resizeImage from '../../utilities/resizer';
+// import express from 'express';
 const sharp_1 = __importDefault(require("sharp"));
 const path = __importStar(require("path"));
-function resizeImage(fullImagePath, thumbImagePath, req, res) {
-    return __awaiter(this, void 0, void 0, function* () {
-        // Set the absolute path for the full size images
-        fullImagePath = path.resolve(__dirname, '../../images/full');
-        // Set the absolute path for the thumbnail images
-        thumbImagePath = path.resolve(__dirname, '../../images/thumb');
+describe('sharp', () => {
+    it('should return image metadata', () => __awaiter(void 0, void 0, void 0, function* () {
+        // Set the path for the image file
+        const imagePath = path.resolve(__dirname, '../../../images/full/fjord.jpg');
         // Read the image file
-        const fullImageFile = path.join(fullImagePath, req.params.filename) + '.jpg';
-        const thumbImageFile = path.join(thumbImagePath, req.params.filename) +
-            `_${req.params.width}_${req.params.height}.jpg`;
-        const image = (0, sharp_1.default)(fullImageFile);
-        // get image metadata
+        const image = (0, sharp_1.default)(imagePath);
+        // Get image metadata
         const metadata = yield image.metadata();
-        // If the metadata is null, it means that the image could not be read
-        if (metadata === null) {
-            throw new Error('Failed to read image file');
-        }
+        // Verify the metadata
+        expect(metadata).toBeDefined();
+        expect(metadata.format).toBe('jpeg');
+    }));
+    it('should return a resized image', () => __awaiter(void 0, void 0, void 0, function* () {
+        // Set the path for the image file
+        const imagePath = path.resolve(__dirname, '../../../images/full/fjord.jpg');
+        // Read the image file
+        const image = (0, sharp_1.default)(imagePath);
         // Resize the image
-        const resizedImage = yield image.resize(parseInt(req.params.width), parseInt(req.params.height));
-        // Save the resized image to the thumbnail folder
-        resizedImage
-            .toFile(thumbImageFile)
-            .then(() => {
-            console.log('Resized image saved to thumbImagePath successfully');
-            // Send a response with the file name of the resized image
-            res.status(200).sendFile(thumbImageFile);
-        })
-            .catch((error) => {
-            console.error(error);
-        });
-    });
-}
-exports.default = resizeImage;
+        const resizedImage = image.resize(200, 200);
+        // Verify the resized image
+        expect(resizedImage).toBeDefined();
+    }));
+});
